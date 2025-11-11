@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Sofi, mi amor ❤️</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- Configuración General --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ffdde1, #ee9ca7); /* Gradiente de amor */
+            color: #4b001a;
+            overflow: hidden; /* Oculta el scroll para que la lluvia de corazones sea a pantalla completa */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* --- Contenedor Principal --- */
+        .container {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.7); /* Fondo blanco traslúcido */
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px); /* Efecto cristal */
+            max-width: 90%;
+            width: 600px;
+            position: relative;
+            z-index: 10;
+            overflow: hidden; /* Para que las animaciones de entrada no se salgan */
+        }
+
+        /* --- Lluvia de Corazones (Fondo) --- */
+        #heart-rain-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none; /* Para poder hacer clic "a través" */
+        }
+
+        .heart-rain {
+            position: absolute;
+            font-size: 1.5rem;
+            color: #ff8fab; /* Rosa corazón */
+            animation: fall linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-10vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(110vh) rotate(360deg);
+                opacity: 0.8;
+            }
+        }
+        /* --- Fin de Lluvia de Corazones --- */
+
+
+        /* --- Título de Amor --- */
+        h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 4rem;
+            color: #d6336c; /* Rosa intenso */
+            text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.5);
+            margin-bottom: 20px;
+        }
+
+        /* --- Sección del Corazón Clickeable --- */
+        #clicker-section p {
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+        }
+
+        #main-heart {
+            width: 150px;
+            height: 150px;
+            background-color: #e02d5f; /* Color del corazón */
+            position: relative;
+            margin: 30px auto;
+            transform: rotate(-45deg);
+            cursor: pointer;
+            transition: transform 0.2s ease-out, background-color 0.2s;
+            box-shadow: 0 5px 15px rgba(179, 35, 74, 0.5);
+        }
+
+        #main-heart:before,
+        #main-heart:after {
+            content: "";
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background-color: #e02d5f;
+            border-radius: 50%;
+            transition: background-color 0.2s;
+        }
+
+        #main-heart:before {
+            top: -75px;
+            left: 0;
+        }
+
+        #main-heart:after {
+            top: 0;
+            left: 75px;
+        }
+
+        /* Efecto al pasar el mouse */
+        #main-heart:hover {
+            transform: rotate(-45deg) scale(1.1);
+        }
+
+        /* Efecto al hacer clic */
+        .heart-clicked {
+            transform: rotate(-45deg) scale(1.05) !important;
+            background-color: #ff4d80 !important;
+        }
+        .heart-clicked:before,
+        .heart-clicked:after {
+            background-color: #ff4d80 !important;
+        }
+
+        /* Contador dentro del corazón */
+        #click-counter {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(45deg); /* Gira el texto para que esté derecho */
+            font-size: 3rem;
+            color: white;
+            font-weight: bold;
+            z-index: 10;
+            user-select: none; /* Evita que el número se seleccione */
+        }
+
+        /* --- Secciones Ocultas (Mensaje e Hijos) --- */
+        #message-section,
+        #names-section {
+            display: none; /* Ocultas por defecto */
+            animation: fadeIn 1.5s ease-out; /* Animación de entrada */
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        /* Animación de salida para el corazón */
+        .fadeOut {
+            animation: fadeOut 0.5s forwards;
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; transform: scale(0.8); }
+        }
+
+        #message-section h2 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 3rem;
+            color: #c9184a;
+            margin-bottom: 15px;
+        }
+        
+        #message-section p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            padding: 0 20px;
+        }
+
+        /* --- Sección de Nombres --- */
+        #names-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px dashed #ffb3c1;
+        }
+
+        #names-section h3 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.5rem;
+            color: #d6336c;
+        }
+
+        #names-section h4 {
+            font-size: 1.3rem;
+            margin-top: 15px;
+            color: #590d22;
+        }
+
+        #names-section ul {
+            list-style-type: none; /* Quitamos bullets por defecto */
+            padding-left: 0;
+            margin-top: 10px;
+        }
+
+        #names-section ul li {
+            font-size: 1.1rem;
+            margin: 8px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Personalización de corazón rosa */
+        #names-section ul li::before {
+            content: '💖'; /* Corazón rosa como viñeta */
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+        
+        /* Cuadro de Niñas */
+        #girls-form {
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        #girl-name-input {
+            padding: 10px;
+            border: 2px solid #ff8fab;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+        }
+        
+        #girl-name-input:focus {
+            outline: none;
+            border-color: #e02d5f;
+            box-shadow: 0 0 10px #ffc2d1;
+        }
+
+        #girl-name-result {
+            margin-top: 10px;
+            font-size: 1rem;
+            color: #c9184a;
+            font-weight: bold;
+            height: 20px; /* Para que no salte el layout */
+        }
+        
+        /* Animación "shake" para el mensaje de error */
+        .shake {
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        @keyframes shake {
+          10%, 90% { transform: translate3d(-1px, 0, 0); }
+          20%, 80% { transform: translate3d(2px, 0, 0); }
+          30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+          40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+
+        /* --- Footer --- */
+        footer {
+            margin-top: 30px;
+            font-size: 0.8rem;
+            color: #800f2f;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="heart-rain-container"></div>
+
+    <main class="container">
+        
+        <h1>Sofía Totorico, Te amo</h1>
+
+        <section id="clicker-section">
+            <p>¡Dale <strong>137</strong> besos al corazón para desbloquear mi mensaje!</p>
+            <div id="main-heart">
+                <span id="click-counter">137</span>
+            </div>
+        </section>
+
+        <section id="message-section">
+            <h2>¡Lo lograste, mi vida!</h2>
+            <p>
+                Te amo un montón. Eres mi persona favorita dentro de Rave y en el universo entero.
+                Me haces RE feliz. Me siento la persona más feliz del mundo desde que te conozco,
+                a pesar de que fue hace poco. ¡Eres todo para mí!
+            </p>
+        </section>
+
+        <section id="names-section">
+            <h3>Nuestros Futuros Hijos</h3>
+            
+            <h4>💖 Niños:</h4>
+            <ul>
+                <li>ILIA BARRETO TOTORICO</li>
+                <li>SEBASTIAN YATRA BARRETO TOTORICO</li>
+                <li>FARADAY ELIANS TOTORICO BARRETO</li>
+            </ul>
+
+            <h4>💖 Niñas:</h4>
+            <p>Propón un nombre para nuestra niña:</p>
+            <form id="girls-form">
+                <input type="text" id="girl-name-input" placeholder="Escribe un nombre...">
+                </form>
+            <p id="girl-name-result"></p>
+        </section>
+
+        <footer>
+            <p>&copy; Derechos y autor a Lauty, alias 33discosduros.</p>
+        </footer>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
