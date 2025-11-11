@@ -8,7 +8,7 @@ body, html {
     color: #4a233A;
 }
 
-/* Contenedor de la lluvia */
+/* Contenedor de la lluvia (sin cambios) */
 #rain-container {
     position: fixed;
     top: 0;
@@ -16,18 +16,14 @@ body, html {
     width: 100%;
     height: 100%;
     z-index: 1;
-    pointer-events: none; /* Permite hacer clic a través de la lluvia */
+    pointer-events: none;
 }
-
-/* Estilo para los elementos que caen */
 .falling-element {
     position: absolute;
     top: -50px;
     user-select: none;
     animation: fall linear forwards;
 }
-
-/* Animación de caída */
 @keyframes fall {
     to {
         transform: translateY(105vh);
@@ -46,45 +42,179 @@ body, html {
     box-sizing: border-box;
 }
 
-/* Títulos bonitos */
+/* Títulos bonitos (Agregué Pacifico como opción) */
 h1, h2, h3 {
     font-family: 'Dancing Script', cursive;
-    color: #d81b60; /* Un rosa más fuerte */
+    color: #d81b60;
     text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
 }
-
 h1 { font-size: 3em; }
-h2 { font-size: 2em; }
+h2 { font-size: 2.2em; }
 h3 { font-size: 1.8em; }
 
-/* El gran corazón */
+/*
+ * --- SECCIÓN DEL CORAZÓN MEJORADA ---
+ */
+#big-heart-container {
+    /* Contenedor para centrar el corazón y manejar clics */
+    position: relative;
+    width: 300px; /* Tamaño del área de clic */
+    height: 300px;
+    margin: 10px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 #big-heart {
-    font-size: 150px;
+    font-size: 250px; /* ¡Corazón mucho más grande! */
     color: #e91e63;
     cursor: pointer;
-    transition: transform 0.1s ease, text-shadow 0.1s ease;
-    /* Efecto de "latido" sutil */
-    animation: beat 1.5s infinite ease-in-out;
+    /* Sombra más pronunciada para efecto 3D */
+    text-shadow: 0 5px 25px rgba(233, 30, 99, 0.6);
+    /* Animación de latido (beat) mejorada */
+    animation: beat 1.2s infinite cubic-bezier(0.215, 0.610, 0.355, 1.000);
+    transition: transform 0.1s ease-out;
+    user-select: none; /* Evita que se seleccione el texto del emoji */
 }
 
-/* Efecto al hacer clic */
+/* Efecto al hacer clic (más pronunciado) */
 #big-heart:active {
-    transform: scale(0.9);
-    text-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+    transform: scale(0.92);
+    text-shadow: 0 2px 15px rgba(233, 30, 99, 0.8);
 }
 
-/* Animación de latido */
+/* Animación de latido (beat) mejorada */
 @keyframes beat {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
+    0% { transform: scale(1); }
+    30% { transform: scale(1.05); }
+    50% { transform: scale(1.08); }
+    70% { transform: scale(1.05); }
+    100% { transform: scale(1); }
 }
 
-/* Clase para ocultar elementos */
+/* --- Efecto de partículas en cada clic --- */
+.click-particle {
+    position: fixed; /* Posición absoluta en la pantalla */
+    z-index: 10;
+    font-size: 20px;
+    color: #ff85a2;
+    user-select: none;
+    pointer-events: none;
+    /* Animación de "explosión" */
+    animation: fly-away 0.8s ease-out forwards;
+}
+
+@keyframes fly-away {
+    0% {
+        transform: translate(-50%, -50%) scale(0.5);
+        opacity: 1;
+    }
+    100% {
+        /* Vuela hacia arriba y se desvanece */
+        transform: translate(-50%, -50%) translateY(-150px) scale(1.5);
+        opacity: 0;
+    }
+}
+
+/*
+ * --- SECCIÓN DEL CONTADOR MEJORADA ---
+ */
+#click-count-container {
+    color: #4a233A;
+    font-size: 1.8em;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+}
+
+#click-count {
+    /* Estilo de "cápsula" para el número */
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.7);
+    color: #e91e63; /* Número en rosa fuerte */
+    padding: 8px 18px;
+    border-radius: 20px;
+    margin: 0 10px;
+    min-width: 50px; /* Ancho mínimo para que no salte */
+    text-align: center;
+    font-size: 1.2em;
+    border: 2px solid #ff85a2;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    /* Transición suave para el efecto "pop" */
+    transition: transform 0.15s ease-out, color 0.15s ease-out;
+}
+
+/*
+ * --- SECCIÓN DEL GRAN MENSAJE "CULOROSA" ---
+ */
+#final-reveal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100; /* Por encima de todo */
+    background: rgba(255, 192, 203, 0.85); /* Fondo rosa traslúcido */
+    backdrop-filter: blur(5px); /* Efecto "vidrio" */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+#final-reveal.hidden {
+    display: none;
+}
+
+/* Animación de entrada para el texto */
+#final-reveal.zoom-in h1 {
+    animation: zoomInLove 1.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Animación de salida para el texto */
+#final-reveal.fade-out {
+    animation: fadeOutLove 1s ease-out forwards;
+}
+
+#final-reveal h1 {
+    font-family: 'Pacifico', cursive; /* ¡Fuente con mucho amor! */
+    font-size: clamp(50px, 12vw, 150px); /* Tamaño enorme y responsive */
+    color: #fff;
+    /* Texto con borde rosa para destacar */
+    -webkit-text-stroke: 3px #e91e63;
+    text-shadow: 
+        0 0 10px #fff,
+        0 0 20px #ff85a2,
+        0 0 30px #e91e63;
+    opacity: 0; /* Empieza invisible para la animación */
+}
+
+@keyframes zoomInLove {
+    from {
+        transform: scale(0.1);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOutLove {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+
+/* --- Secciones Ocultas (sin cambios) --- */
 .hidden {
     display: none;
 }
 
-/* Estilo para los mensajes revelados */
 #love-message, #kids-section {
     background: rgba(255, 255, 255, 0.85);
     border-radius: 15px;
@@ -93,7 +223,6 @@ h3 { font-size: 1.8em; }
     max-width: 800px;
     border: 2px solid #ff85a2;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    /* Animación de aparición */
     animation: fadeIn 1.5s ease-in-out;
 }
 
@@ -108,9 +237,9 @@ h3 { font-size: 1.8em; }
     }
 }
 
-/* Lista de nombres con corazón rosa */
+/* Lista de nombres */
 #kids-section ul {
-    list-style-type: '💖 '; /* ¡Personalización! */
+    list-style-type: '💖 ';
     text-align: left;
     display: inline-block;
     font-size: 1.1em;
@@ -126,7 +255,6 @@ h3 { font-size: 1.8em; }
     border-radius: 8px;
     margin-right: 10px;
 }
-
 .girl-name-form button {
     font-size: 1em;
     padding: 10px 15px;
@@ -137,18 +265,15 @@ h3 { font-size: 1.8em; }
     cursor: pointer;
     transition: background-color 0.2s;
 }
-
 .girl-name-form button:hover {
     background-color: #d81b60;
 }
-
-/* Mensaje de broma */
 #girl-name-message {
     color: #d81b60;
     font-weight: bold;
     font-size: 1.2em;
     margin-top: 10px;
-    height: 20px; /* Evita que el layout salte */
+    height: 20px;
 }
 
 /* Pie de página */
