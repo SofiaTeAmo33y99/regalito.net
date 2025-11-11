@@ -1,147 +1,161 @@
-// Espera a que todo el contenido de la página (HTML) se cargue
+// Espera a que todo el contenido de la página esté cargado
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- Selectores de Elementos ---
-    const heart = document.getElementById('main-heart');
-    const counterDisplay = document.getElementById('click-counter');
-    const clickerSection = document.getElementById('clicker-section');
-    const messageSection = document.getElementById('message-section');
-    const namesSection = document.getElementById('names-section');
-    
-    const girlForm = document.getElementById('girls-form');
-    const girlInput = document.getElementById('girl-name-input');
-    const girlResult = document.getElementById('girl-name-result');
-    
-    const rainContainer = document.getElementById('heart-rain-container');
+    // --- Referencias a los elementos del DOM ---
+    const bigHeart = document.getElementById('big-heart');
+    const clickCountSpan = document.getElementById('click-count');
+    const clickSection = document.getElementById('click-section');
+    const loveMessage = document.getElementById('love-message');
+    const kidsSection = document.getElementById('kids-section');
+    const girlNameInput = document.getElementById('girl-name-input');
+    const girlNameBtn = document.getElementById('girl-name-btn');
+    const girlNameMessage = document.getElementById('girl-name-message');
+    const rainContainer = document.getElementById('rain-container');
 
-    // --- Estado Inicial ---
-    let clickCount = 137;
-    counterDisplay.textContent = clickCount;
+    // --- Variables del contador ---
+    let clickCount = 0;
+    const clicksToReveal = 137;
 
-    // --- Lógica de la Lluvia de Corazones ---
-    function createHeartRain() {
-        const heartEl = document.createElement('div');
-        heartEl.classList.add('heart-rain');
-        heartEl.innerHTML = '💖'; // Puedes cambiarlo por '❤' o '💕'
-        
+    // --- Lluvia de Corazones y "Te amo" ---
+    function createFallingElement() {
+        const element = document.createElement('span');
+        element.classList.add('falling-element');
+
+        // Elige aleatoriamente entre un corazón y "Te amo"
+        if (Math.random() > 0.3) {
+            element.innerHTML = '💖'; // Corazón rosa
+            element.style.fontSize = (Math.random() * 15 + 15) + 'px'; // Tamaño aleatorio
+        } else {
+            element.innerHTML = 'Te amo';
+            element.style.fontSize = (Math.random() * 10 + 12) + 'px'; // Tamaño aleatorio
+            element.style.fontFamily = "'Dancing Script', cursive";
+            element.style.color = '#d81b60';
+            element.style.fontWeight = 'bold';
+        }
+
         // Posición horizontal aleatoria
-        heartEl.style.left = `${Math.random() * 100}vw`;
+        element.style.left = Math.random() * 100 + 'vw';
         
-        // Duración de caída aleatoria (entre 3 y 6 segundos)
-        heartEl.style.animationDuration = `${Math.random() * 3 + 3}s`;
+        // Duración de caída aleatoria (entre 5 y 10 segundos)
+        const duration = (Math.random() * 5) + 5;
+        element.style.animationDuration = duration + 's';
         
         // Opacidad aleatoria
-        heartEl.style.opacity = Math.random() * 0.5 + 0.3; // Entre 0.3 y 0.8
-        
-        // Tamaño aleatorio
-        heartEl.style.fontSize = `${Math.random() * 1 + 0.8}rem`; // Entre 0.8rem y 1.8rem
+        element.style.opacity = Math.random() * 0.5 + 0.3; // Más sutil
 
-        rainContainer.appendChild(heartEl);
+        rainContainer.appendChild(element);
 
-        // Limpia el corazón del DOM después de que termine la animación
+        // Elimina el elemento del DOM después de que termine la animación
         setTimeout(() => {
-            heartEl.remove();
-        }, 6000); // Un poco más que la duración máxima de la animación
+            element.remove();
+        }, duration * 1000);
     }
 
-    // Crea un nuevo corazón cada 300ms
-    setInterval(createHeartRain, 300);
+    // Crea un nuevo elemento de lluvia cada 300ms
+    setInterval(createFallingElement, 300);
 
     // --- Lógica del Contador de Clics ---
-    heart.addEventListener('click', () => {
-        if (clickCount > 0) {
-            // Resta un clic
-            clickCount--;
-            counterDisplay.textContent = clickCount;
+    bigHeart.addEventListener('click', () => {
+        // Solo cuenta si no hemos llegado al límite
+        if (clickCount < clicksToReveal) {
+            clickCount++;
+            clickCountSpan.textContent = clickCount;
 
-            // --- Efecto de clic en el corazón ---
-            heart.classList.add('heart-clicked');
-            
-            // Crea una pequeña explosión de corazones al hacer clic
-            createClickEffect(heart.getBoundingClientRect());
-
-            // Quita la clase de animación después de un momento
+            // Efecto de "pop" en el número
+            clickCountSpan.style.transform = 'scale(1.3)';
             setTimeout(() => {
-                heart.classList.remove('heart-clicked');
-            }, 200);
+                clickCountSpan.style.transform = 'scale(1)';
+            }, 100);
 
-            // --- ¡Se completó el contador! ---
-            if (clickCount === 0) {
-                triggerFinalEffect();
+            // ¡El gran momento!
+            if (clickCount === clicksToReveal) {
+                revealSecret();
             }
         }
     });
 
-    // Función para el efecto final
-    function triggerFinalEffect() {
-        // 1. Aplica el "Efecto" de desaparición a la sección del clicker
-        clickerSection.classList.add('fadeOut');
-
-        // 2. Espera a que termine la animación de fadeOut (0.5s)
+    // --- Función para Revelar el Secreto ---
+    function revealSecret() {
+        // 1. Ocultar la sección del corazón y el contador con un fundido
+        clickSection.style.transition = 'opacity 0.5s ease-out';
+        clickSection.style.opacity = '0';
+        
+        // 2. Esperar a que termine el fundido para quitarlo y mostrar los mensajes
         setTimeout(() => {
-            // 3. Oculta la sección del clicker permanentemente
-            clickerSection.style.display = 'none';
-
-            // 4. Muestra las secciones ocultas (el CSS se encarga de la animación 'fadeIn')
-            messageSection.style.display = 'block';
-            namesSection.style.display = 'block';
-
-            // Opcional: Intensificar la lluvia de corazones
-            // (Podríamos llamar a createHeartRain() más rápido)
+            clickSection.style.display = 'none';
             
-        }, 500); // 500ms = 0.5s (la duración de la animación fadeOut)
+            // 3. Mostrar el mensaje de amor y la sección de hijos
+            loveMessage.classList.remove('hidden');
+            kidsSection.classList.remove('hidden');
+
+            // 4. (Opcional) Hacer un pequeño "confeti" de corazones
+            triggerHeartExplosion();
+
+        }, 500); // 500ms (medio segundo)
     }
 
-    // --- Lógica del Formulario de Niñas ---
-    girlForm.addEventListener('submit', (event) => {
-        // Previene que la página se recargue al presionar "Enter"
-        event.preventDefault(); 
-        
-        // Muestra el mensaje personalizado
-        girlResult.textContent = 'NO BEBE, LAUTY ELIGE LOS NOMBRES OK?';
-        
-        // Añade la animación "shake"
-        girlResult.classList.add('shake');
+    // --- Función de la Broma del Nombre ---
+    function showNameMessage() {
+        girlNameMessage.textContent = 'NO BEBE, LAUTY ELIGE LOS NOMBRES OK?';
+        girlNameInput.value = ''; // Limpia el campo
 
-        // Limpia el input
-        girlInput.value = '';
+        // Efecto de "shake" o "vibración"
+        girlNameMessage.style.transition = 'transform 0.1s';
+        let i = 0;
+        const interval = setInterval(() => {
+            girlNameMessage.style.transform = `translateX(${(i % 2 === 0 ? 5 : -5)}px)`;
+            i++;
+            if (i > 6) {
+                clearInterval(interval);
+                girlNameMessage.style.transform = 'none';
+            }
+        }, 50);
+    }
 
-        // Quita la animación "shake" después de que termine
-        setTimeout(() => {
-            girlResult.classList.remove('shake');
-        }, 500); // 500ms = 0.5s (duración de la animación)
+    // Escuchar tanto el clic en el botón como la tecla "Enter"
+    girlNameBtn.addEventListener('click', showNameMessage);
+    girlNameInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault(); // Evita que el formulario se envíe
+            showNameMessage();
+        }
     });
 
-    // --- Función Extra: Explosión de corazones al hacer clic ---
-    function createClickEffect(rect) {
-        for (let i = 0; i < 10; i++) { // Lanza 10 corazones
-            const miniHeart = document.createElement('div');
-            miniHeart.innerHTML = '💕';
-            miniHeart.style.position = 'absolute';
-            // Posiciona los corazones en el centro del corazón grande
-            miniHeart.style.left = `${rect.left + rect.width / 2}px`;
-            miniHeart.style.top = `${rect.top + rect.height / 2}px`;
-            miniHeart.style.zIndex = '100';
-            miniHeart.style.pointerEvents = 'none';
-            miniHeart.style.transition = 'all 0.5s ease-out';
+    // --- (Bonus) Explosión de Corazones al llegar a 137 ---
+    function triggerHeartExplosion() {
+        for (let i = 0; i < 30; i++) {
+            const heart = document.createElement('span');
+            heart.innerHTML = '💖';
+            heart.style.position = 'absolute';
+            heart.style.zIndex = '100';
+            heart.style.fontSize = (Math.random() * 20 + 20) + 'px';
+            // Posicionar la explosión donde estaba el corazón
+            heart.style.left = '50vw'; 
+            heart.style.top = '25vh'; 
+            heart.style.transition = 'transform 1s ease-out, opacity 1s ease-out';
             
-            document.body.appendChild(miniHeart);
+            // Calcular trayectoria
+            const angle = Math.random() * Math.PI * 2;
+            const radius = Math.random() * 200 + 100;
+            const x = Math.cos(angle) * radius;
+            const y = Math.sin(angle) * radius;
 
-            // Movimiento aleatorio hacia afuera
-            const x = (Math.random() - 0.5) * 200; // -100px a +100px
-            const y = (Math.random() - 0.5) * 200; // -100px a +100px
+            // Aplicar transformación inicial (para la animación)
+            heart.style.transform = 'translate(-50%, -50%) scale(0)';
+            heart.style.opacity = '1';
 
-            // Aplica la animación
+            document.body.appendChild(heart);
+            
+            // Animar hacia afuera
             setTimeout(() => {
-                miniHeart.style.transform = `translate(${x}px, ${y}px) scale(0)`;
-                miniHeart.style.opacity = '0';
+                heart.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)) scale(1)`;
+                heart.style.opacity = '0';
             }, 10);
-            
-            // Limpia el DOM
+
+            // Limpiar del DOM
             setTimeout(() => {
-                miniHeart.remove();
-            }, 600);
+                heart.remove();
+            }, 1010); // 10ms + 1000ms de animación
         }
     }
-
 });
