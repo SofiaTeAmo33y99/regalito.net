@@ -1,0 +1,161 @@
+/* Configuración general y fondo romántico */
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #ffdde1, #ffc0cb 60%, #ff9aaf);
+    overflow: hidden; /* Evita el scroll por la lluvia */
+    color: #4a233A;
+}
+
+/* Contenedor de la lluvia */
+#rain-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none; /* Permite hacer clic a través de la lluvia */
+}
+
+/* Estilo para los elementos que caen */
+.falling-element {
+    position: absolute;
+    top: -50px;
+    user-select: none;
+    animation: fall linear forwards;
+}
+
+/* Animación de caída */
+@keyframes fall {
+    to {
+        transform: translateY(105vh);
+        opacity: 0;
+    }
+}
+
+/* Contenido principal centrado */
+.main-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 20px;
+    height: 100vh;
+    overflow-y: auto; /* Permite scroll si el contenido es mucho */
+    box-sizing: border-box;
+}
+
+/* Títulos bonitos */
+h1, h2, h3 {
+    font-family: 'Dancing Script', cursive;
+    color: #d81b60; /* Un rosa más fuerte */
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+}
+
+h1 { font-size: 3em; }
+h2 { font-size: 2em; }
+h3 { font-size: 1.8em; }
+
+/* El gran corazón */
+#big-heart {
+    font-size: 150px;
+    color: #e91e63;
+    cursor: pointer;
+    transition: transform 0.1s ease, text-shadow 0.1s ease;
+    /* Efecto de "latido" sutil */
+    animation: beat 1.5s infinite ease-in-out;
+}
+
+/* Efecto al hacer clic */
+#big-heart:active {
+    transform: scale(0.9);
+    text-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+}
+
+/* Animación de latido */
+@keyframes beat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* Clase para ocultar elementos */
+.hidden {
+    display: none;
+}
+
+/* Estilo para los mensajes revelados */
+#love-message, #kids-section {
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 15px;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 800px;
+    border: 2px solid #ff85a2;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    /* Animación de aparición */
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* Lista de nombres con corazón rosa */
+#kids-section ul {
+    list-style-type: '💖 '; /* ¡Personalización! */
+    text-align: left;
+    display: inline-block;
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #583c4f;
+}
+
+/* Formulario de nombre de niña */
+.girl-name-form input {
+    font-size: 1em;
+    padding: 10px;
+    border: 2px solid #ffc0cb;
+    border-radius: 8px;
+    margin-right: 10px;
+}
+
+.girl-name-form button {
+    font-size: 1em;
+    padding: 10px 15px;
+    background-color: #e91e63;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.girl-name-form button:hover {
+    background-color: #d81b60;
+}
+
+/* Mensaje de broma */
+#girl-name-message {
+    color: #d81b60;
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-top: 10px;
+    height: 20px; /* Evita que el layout salte */
+}
+
+/* Pie de página */
+footer {
+    margin-top: 50px;
+    padding-bottom: 20px;
+    color: #6d4a5d;
+    font-size: 0.9em;
+    font-weight: bold;
+}
